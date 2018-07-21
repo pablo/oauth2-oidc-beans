@@ -1,4 +1,6 @@
-package com.roshka.oauth2.objects;
+package com.roshka.openid.objects;
+
+import com.roshka.openid.objects.Address;
 
 public class UserInfo {
 

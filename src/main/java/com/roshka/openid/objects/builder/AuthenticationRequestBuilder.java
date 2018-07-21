@@ -24,6 +24,7 @@ public class AuthenticationRequestBuilder {
         authenticationRequest.setDisplay(bctx.getSingleParameterValue(AuthenticationRequest.DISPLAY));
         authenticationRequest.setPrompt(bctx.getSingleParameterValue(AuthenticationRequest.PROMPT));
         authenticationRequest.setMaxAge(bctx.getSingleParameterValue(AuthenticationRequest.MAX_AGE));
+        authenticationRequest.setClaimLocales(bctx.getSingleParameterValue(AuthenticationRequest.CLAIM_LOCALES));
         authenticationRequest.setUiLocales(bctx.getSingleParameterValue(AuthenticationRequest.UI_LOCALES));
         authenticationRequest.setIdTokenHint(bctx.getSingleParameterValue(AuthenticationRequest.ID_TOKEN_HINT));
         authenticationRequest.setLoginHint(bctx.getSingleParameterValue(AuthenticationRequest.LOGIN_HINT));

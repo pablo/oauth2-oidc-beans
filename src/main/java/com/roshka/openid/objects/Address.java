@@ -1,4 +1,4 @@
-package com.roshka.oauth2.objects;
+package com.roshka.openid.objects;
 
 public class Address {
 

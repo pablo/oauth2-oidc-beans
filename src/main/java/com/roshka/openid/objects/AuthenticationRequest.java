@@ -114,7 +114,17 @@ public class AuthenticationRequest
         this.claimLocales = claimLocales;
     }
 
+    // The Authentication Request contains the prompt parameter with the value login.
+    // In this case, the Authorization Server MUST reauthenticate the End-User even
+    // if the End-User is already authenticated.
     public boolean mustAuthenticate() {
         return prompt != null && prompt.equals("login");
+    }
+
+    // The Authentication Request contains the prompt parameter with the value none.
+    // In this case, the Authorization Server MUST return an error if an End-User
+    // is not already Authenticated or could not be silently Authenticated.
+    public boolean mustNotAuthenticate() {
+        return prompt != null && prompt.equals("none");
     }
 }
