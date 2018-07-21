@@ -1,6 +1,17 @@
 package com.roshka.oauth2.objects;
 
+import java.nio.channels.FileLock;
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public class AuthorizationRequest {
+
+    public enum FlowType {
+        AUTHORIZATION_CODE_FLOW,
+        IMPLICIT_FLOW,
+        HYBRID_FLOW,
+        INVALID
+    }
 
     public static final String RESPONSE_TYPE = "response_type";
     public static final String CLIENT_ID = "client_id";
@@ -16,12 +27,15 @@ public class AuthorizationRequest {
     private String state;
     private String responseMode;
 
+    private String[] responseTypeValues;
+
     public String getResponseType() {
         return responseType;
     }
 
     public void setResponseType(String responseType) {
         this.responseType = responseType;
+        this.responseTypeValues = responseType.split("\\s+");
     }
 
     public String getClientId() {
@@ -62,5 +76,68 @@ public class AuthorizationRequest {
 
     public void setResponseMode(String responseMode) {
         this.responseMode = responseMode;
+    }
+
+    public String[] getResponseTypeValues() {
+        return responseTypeValues;
+    }
+
+    public void setResponseTypeValues(String[] responseTypeValues) {
+        this.responseTypeValues = responseTypeValues;
+    }
+
+    public FlowType getFlowType()
+    {
+        if (getResponseTypeValues() == null)
+            return FlowType.INVALID;
+
+        FlowType ret = FlowType.INVALID;
+
+        Stream<String> vals = Arrays.stream(getResponseTypeValues());
+
+        boolean code = vals.anyMatch(v -> v.equals("code"));
+        boolean id_token = vals.anyMatch(v -> v.equals("id_token"));
+        boolean token = vals.anyMatch(v -> v.equals("token"));
+
+        if (code && !id_token && !token) {
+            ret = FlowType.AUTHORIZATION_CODE_FLOW;
+        } else if (id_token && !code && !token) {
+            ret = FlowType.IMPLICIT_FLOW;
+        } else if (id_token && token && !code) {
+            ret = FlowType.IMPLICIT_FLOW;
+        } else if (code && id_token && !token) {
+            ret = FlowType.HYBRID_FLOW;
+        } else if (code && token && !id_token) {
+            ret = FlowType.HYBRID_FLOW;
+        } else if (code && token && id_token) {
+            ret = FlowType.HYBRID_FLOW;
+        }
+
+        return ret;
+
+    }
+
+    public String getSuccessfullCodeRedirect()
+    {
+        return String.format("%s?code=%s&state=%s", getRedirectURI(), "" ,getState());
+    }
+
+    public String getSuccessfullTokenRedirect()
+    {
+
+    }
+
+    public String getSuccessfullHybridRedirect()
+    {
+
+    }
+
+    public String getSuccessfullRedirect()
+    {
+        if (getResponseType().equals("code")) {
+            return getSuccessfullCodeRedirect();
+        } else if (kkk)
+
+        return "";
     }
 }
