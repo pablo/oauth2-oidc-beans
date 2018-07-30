@@ -2,6 +2,7 @@ package com.roshka.openid.objects.builder;
 
 
 import com.roshka.oauth2.exception.Oauth2Exception;
+import com.roshka.oauth2.objects.Oauth2Error;
 import com.roshka.oauth2.objects.builder.AuthorizationRequestBuilder;
 import com.roshka.oauth2.objects.builder.Oauth2ObjectsBuilderCtx;
 import com.roshka.openid.objects.AuthenticationRequest;
@@ -29,6 +30,14 @@ public class AuthenticationRequestBuilder {
         authenticationRequest.setIdTokenHint(bctx.getSingleParameterValue(AuthenticationRequest.ID_TOKEN_HINT));
         authenticationRequest.setLoginHint(bctx.getSingleParameterValue(AuthenticationRequest.LOGIN_HINT));
         authenticationRequest.setAcrValues(bctx.getSingleParameterValue(AuthenticationRequest.ACR_VALUES));
+
+        if (bctx.hasErrors()) {
+            // set error states
+            for (Oauth2Error oauth2Error : bctx.getErrorList()) {
+                oauth2Error.setState(authenticationRequest.getState());
+            }
+            throw bctx.getException();
+        }
 
     }
 

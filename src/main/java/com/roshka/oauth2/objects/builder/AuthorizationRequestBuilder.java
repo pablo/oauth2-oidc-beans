@@ -16,6 +16,8 @@ public class AuthorizationRequestBuilder {
 
         Oauth2ObjectsBuilderCtx bctx = new Oauth2ObjectsBuilderCtx(request);
 
+        authorizationRequest.setState(bctx.getSingleParameterValue(AuthorizationRequest.STATE));
+
         authorizationRequest.setResponseType(bctx.getSingleParameterValue(AuthorizationRequest.RESPONSE_TYPE, true));
         authorizationRequest.setClientId(bctx.getSingleParameterValue(AuthorizationRequest.CLIENT_ID, true));
         authorizationRequest.setRedirectURI(bctx.getSingleParameterValue(AuthorizationRequest.REDIRECT_URI));
@@ -40,10 +42,13 @@ public class AuthorizationRequestBuilder {
         }
 
         authorizationRequest.setScope(bctx.getSingleParameterValue(AuthorizationRequest.SCOPE, true));
-        authorizationRequest.setState(bctx.getSingleParameterValue(AuthorizationRequest.STATE));
         authorizationRequest.setResponseMode(bctx.getSingleParameterValue(AuthorizationRequest.RESPONSE_MODE));
 
         if (bctx.hasErrors()) {
+            // set error states
+            for (Oauth2Error oauth2Error : bctx.getErrorList()) {
+                oauth2Error.setState(authorizationRequest.getState());
+            }
             throw bctx.getException();
         }
 
