@@ -124,11 +124,13 @@ public class AuthorizationRequest {
 
     public String getSuccessfullTokenRedirect()
     {
+        return null;
 
     }
 
     public String getSuccessfullHybridRedirect()
     {
+        return null;
 
     }
 
@@ -136,7 +138,7 @@ public class AuthorizationRequest {
     {
         if (getResponseType().equals("code")) {
             return getSuccessfullCodeRedirect();
-        } else if (kkk)
+        }
 
         return "";
     }

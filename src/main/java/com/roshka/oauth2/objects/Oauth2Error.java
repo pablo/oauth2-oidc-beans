@@ -1,46 +1,33 @@
 package com.roshka.oauth2.objects;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class Oauth2Error {
 
-    public enum Oauth2ErrorType {
-        INVALID_REQUEST("invalid_request"),
-        UNAUTHORIZED_CLIENT("unauthorized_client"),
-        ACCESS_DENIED("access_denied"),
-        UNSUPPORTED_RESPONSE_TYPE("unsupported_response_type"),
-        INVALID_SCOPE("invalid_scope"),
-        SERVER_ERROR("server_error"),
-        TEMPORARILY_UNAVAILABLE("temporarily_unavailable")
-        ;
+    public static final String INVALID_REQUEST = "invalid_request";
+    public static final String UNAUTHORIZED_CLIENT = "unauthorized_client";
+    public static final String ACCESS_DENIED = "access_denied";
+    public static final String UNSUPPORTED_RESPONSE_TYPE = "unsupported_response_type";
+    public static final String INVALID_SCOPE = "invalid_scope";
+    public static final String SERVER_ERROR = "server_error";
+    public static final String TEMPORARILY_UNAVAILABLE = "temporarily_unavailable";
 
-        private String errValue;
-
-        Oauth2ErrorType(String errValue) {
-            this.errValue = errValue;
-        }
-
-        public String getErrValue()
-        {
-            return this.errValue;
-        }
-
-    }
-
-    public Oauth2Error(Oauth2ErrorType error, String errorDescription) {
+    public Oauth2Error(String error, String errorDescription) {
         this.error = error;
         this.errorDescription = errorDescription;
     }
 
-
-    private Oauth2ErrorType error;
+    private String error;
     private String errorDescription;
     private String errorURI;
     private String state;
 
-    public Oauth2ErrorType getError() {
+    public String getError() {
         return error;
     }
 
-    public void setError(Oauth2ErrorType error) {
+    public void setError(String error) {
         this.error = error;
     }
 
@@ -66,6 +53,34 @@ public class Oauth2Error {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String buildErrorRedirect(String redirectURI)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(redirectURI).append("?");
+
+        // error
+        sb.append("error=").append(getError()).append('&');
+        try {
+            if (getErrorDescription() != null)
+                sb.append("error_description=").append(
+                        URLEncoder.encode(getErrorDescription(), "utf-8")
+                ).append('&');
+            if (getErrorURI() != null)
+                sb.append("error_uri=").append(
+                        URLEncoder.encode(getErrorURI(), "utf-8")
+                ).append('&');
+            if (getState() != null)
+                sb.append("state=").append(
+                        URLEncoder.encode(getState(), "utf-8")
+                );
+        } catch (UnsupportedEncodingException e) {
+            // ignore
+        }
+
+        return sb.toString();
     }
 
 }

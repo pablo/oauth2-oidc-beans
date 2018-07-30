@@ -42,13 +42,13 @@ public class Oauth2ObjectsBuilderCtx
                 ret = values[0];
             } else {
                 errorList.add(
-                        new Oauth2Error(Oauth2Error.Oauth2ErrorType.INVALID_REQUEST, String.format("Multiple (%d) values for parameter [%s]", values.length, paramName))
+                        new Oauth2Error(Oauth2Error.INVALID_REQUEST, String.format("Multiple (%d) values for parameter [%s]", values.length, paramName))
                 );
             }
         } else {
             if (mandatory) {
                 errorList.add(
-                        new Oauth2Error(Oauth2Error.Oauth2ErrorType.INVALID_REQUEST, String.format("Missing mandatory parameter [%s]", paramName))
+                        new Oauth2Error(Oauth2Error.INVALID_REQUEST, String.format("Missing mandatory parameter [%s]", paramName))
                 );
             }
         }

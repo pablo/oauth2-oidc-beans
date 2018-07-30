@@ -27,7 +27,7 @@ public class AuthorizationRequestBuilder {
             } catch (IllegalArgumentException e) {
                 bctx.addError(
                     new Oauth2Error(
-                        Oauth2Error.Oauth2ErrorType.INVALID_REQUEST,
+                        Oauth2Error.INVALID_REQUEST,
                         String.format(
                                 "Provided [%s] uri value is invalid. Error: [%s]",
                                 AuthorizationRequest.REDIRECT_URI,
