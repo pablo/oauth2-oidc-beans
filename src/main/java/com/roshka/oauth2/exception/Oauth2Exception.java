@@ -30,4 +30,17 @@ public class Oauth2Exception extends Exception {
     public void setErrors(List<Oauth2Error> errorList) {
         this.errorList = errorList;
     }
+
+    public String buildExceptionRedirect(String redirectURI)
+    {
+        Oauth2Error err = null;
+        if (errorList == null || errorList.size() == 0) {
+            // weird case. should not happen
+            err = new Oauth2Error(Oauth2Error.SERVER_ERROR, "Invalid error handling");
+        } else {
+            // just take the first error (for now)
+            err = errorList.get(0);
+        }
+        return err.buildErrorRedirect(redirectURI);
+    }
 }
