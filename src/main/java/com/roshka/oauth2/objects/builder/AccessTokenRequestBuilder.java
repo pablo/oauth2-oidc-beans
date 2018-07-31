@@ -4,6 +4,7 @@ import com.roshka.oauth2.exception.Oauth2Exception;
 import com.roshka.oauth2.objects.AccessTokenRequest;
 import com.roshka.oauth2.objects.AuthorizationRequest;
 import com.roshka.oauth2.objects.Oauth2Error;
+import com.roshka.oauth2.util.URIUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -24,18 +25,14 @@ public class AccessTokenRequestBuilder {
         accessTokenRequest.setClientId(bctx.getSingleParameterValue(AccessTokenRequest.CLIENT_ID));
 
         if (accessTokenRequest.getRedirectURI() != null) {
-            // check if URI is valid
-            try {
-                URI uri = URI.create(accessTokenRequest.getRedirectURI());
-            } catch (IllegalArgumentException e) {
+            if (!URIUtil.validURI(accessTokenRequest.getRedirectURI())) {
                 bctx.addError(
                     new Oauth2Error(
                         Oauth2Error.INVALID_REQUEST,
                         String.format(
-                                "Provided [%s] uri value is invalid. Error: [%s]",
+                                "Provided [%s] value [%s] value is invalid.",
                                 AuthorizationRequest.REDIRECT_URI,
-                                accessTokenRequest.getRedirectURI(),
-                                e.getMessage()
+                                accessTokenRequest.getRedirectURI()
                         )
                     )
                 );
