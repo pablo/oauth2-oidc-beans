@@ -1,5 +1,7 @@
 package com.roshka.openid.objects;
 
+import java.util.List;
+
 public class IdToken {
 
     // comments from http://openid.net/specs/openid-connect-core-1_0.html#IDToken
@@ -29,11 +31,11 @@ public class IdToken {
     // Its value is a JSON number representing the number of seconds from 1970-01-01T0:0:0Z
     // as measured in UTC until the date/time. See RFC 3339 [RFC3339] for details regarding
     // date/times in general and UTC in particular.
-    private String exp;
+    private long exp;
 
     // REQUIRED. Time at which the JWT was issued. Its value is a JSON number representing
     // the number of seconds from 1970-01-01T0:0:0Z as measured in UTC until the date/time.
-    private String iat;
+    private long iat;
 
     // Time when the End-User authentication occurred. Its value is a JSON number representing
     // the number of seconds from 1970-01-01T0:0:0Z as measured in UTC until the date/time.
@@ -41,7 +43,7 @@ public class IdToken {
     // then this Claim is REQUIRED; otherwise, its inclusion is OPTIONAL. (The auth_time
     // Claim semantically corresponds to the OpenID 2.0 PAPE [OpenID.PAPE] auth_time
     // response parameter.)
-    private String auth_time;
+    private long authTime;
 
     // String value used to associate a Client session with an ID Token, and to mitigate
     // replay attacks. The value is passed through unmodified from the Authentication
@@ -73,7 +75,7 @@ public class IdToken {
     // values to be used in the amr Claim is beyond the scope of this specification. Parties
     // using this claim will need to agree upon the meanings of the values used, which may be
     // context-specific. The amr value is an array of case sensitive strings.
-    private String amr;
+    private List<String> amr;
 
     // OPTIONAL. Authorized party - the party to which the ID Token was issued. If present, it
     // MUST contain the OAuth 2.0 Client ID of this party. This Claim is only needed when the ID
@@ -114,28 +116,28 @@ public class IdToken {
         this.aud = aud;
     }
 
-    public String getExp() {
+    public long getExp() {
         return exp;
     }
 
-    public void setExp(String exp) {
+    public void setExp(long exp) {
         this.exp = exp;
     }
 
-    public String getIat() {
+    public long getIat() {
         return iat;
     }
 
-    public void setIat(String iat) {
+    public void setIat(long iat) {
         this.iat = iat;
     }
 
-    public String getAuth_time() {
-        return auth_time;
+    public long getAuthTime() {
+        return authTime;
     }
 
-    public void setAuth_time(String auth_time) {
-        this.auth_time = auth_time;
+    public void setAuthTime(long authTime) {
+        this.authTime = authTime;
     }
 
     public String getNonce() {
@@ -154,11 +156,11 @@ public class IdToken {
         this.acr = acr;
     }
 
-    public String getAmr() {
+    public List<String> getAmr() {
         return amr;
     }
 
-    public void setAmr(String amr) {
+    public void setAmr(List<String> amr) {
         this.amr = amr;
     }
 
