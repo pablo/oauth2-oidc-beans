@@ -93,11 +93,9 @@ public class AuthorizationRequest {
 
         FlowType ret = FlowType.INVALID;
 
-        Stream<String> vals = Arrays.stream(getResponseTypeValues());
-
-        boolean code = vals.anyMatch(v -> v.equals("code"));
-        boolean id_token = vals.anyMatch(v -> v.equals("id_token"));
-        boolean token = vals.anyMatch(v -> v.equals("token"));
+        boolean code = Arrays.stream(getResponseTypeValues()).anyMatch(v -> v.equals("code"));
+        boolean id_token = Arrays.stream(getResponseTypeValues()).anyMatch(v -> v.equals("id_token"));
+        boolean token = Arrays.stream(getResponseTypeValues()).anyMatch(v -> v.equals("token"));
 
         if (code && !id_token && !token) {
             ret = FlowType.AUTHORIZATION_CODE_FLOW;
